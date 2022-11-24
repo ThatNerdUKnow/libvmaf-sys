@@ -97,7 +97,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "libvmaf-rs"
+name = "libvmaf-sys"
 version = "0.1.0"
 dependencies = [
  "bindgen",
