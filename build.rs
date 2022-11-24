@@ -1,4 +1,4 @@
-extern crate meson;
+use meson_next;
 use std::env;
 use std::fs::canonicalize;
 use std::path::PathBuf;
@@ -11,7 +11,7 @@ fn main() {
     let build_dir_str = build_dir.to_str().unwrap();
     let lib_dir_str = lib_dir.to_str().unwrap();
 
-    meson::build("vmaf/libvmaf", build_dir_str);
+    meson_next::build("vmaf/libvmaf", build_dir_str);
 
     println!("cargo:rustc-link-lib=static=vmaf");
     println!("cargo:rustc-link-search=native={lib_dir_str}");

@@ -12,5 +12,5 @@ authors = ["Brandon Piña"]
 [dependencies]
 
 [build-dependencies]
-meson = "1.0.0"
+meson-next = "1.0.0"
 bindgen = "0.61.0"
