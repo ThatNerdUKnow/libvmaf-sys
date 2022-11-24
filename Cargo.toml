@@ -1,12 +1,14 @@
 [package]
 name = "libvmaf-sys"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Library bindings for Netflix's VMAF"
 license = "MIT"
 repository = "https://github.com/ThatNerdUKnow/libvmaf-rs"
 authors = ["Brandon Piña"]
 include = ["**/*.rs","Cargo.toml","Cargo.lock","vmaf/libvmaf","vmaf/model"]
+readme = "readme.md"
+keywords = ["vmaf","video"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
