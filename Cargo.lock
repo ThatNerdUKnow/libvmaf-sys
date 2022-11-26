@@ -98,7 +98,7 @@ dependencies = [
 
 [[package]]
 name = "libvmaf-sys"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "bindgen",
  "meson-next",
