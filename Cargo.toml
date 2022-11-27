@@ -1,6 +1,6 @@
 [package]
 name = "libvmaf-sys"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 description = "Library bindings for Netflix's VMAF"
 license = "MIT"
@@ -15,5 +15,5 @@ keywords = ["vmaf","video"]
 [dependencies]
 
 [build-dependencies]
-meson-next = "1.0.0"
+meson-next = "1.0.1"
 bindgen = "0.61.0"
