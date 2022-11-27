@@ -1,6 +1,6 @@
 [package]
 name = "libvmaf-sys"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 description = "Library bindings for Netflix's VMAF"
 license = "MIT"
