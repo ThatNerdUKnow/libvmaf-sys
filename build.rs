@@ -25,6 +25,9 @@ fn main() {
     // Generate bindings to libvmaf using rust-bindgen
     let bindings = bindgen::Builder::default()
         .header("vmaf/libvmaf/include/libvmaf/libvmaf.h")
+        .default_enum_style(bindgen::EnumVariation::Rust {
+            non_exhaustive: false,
+        })
         .clang_arg(format!("-I{include_path}"))
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .generate()
