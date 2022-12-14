@@ -1,9 +1,9 @@
 [package]
 name = "libvmaf-sys"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 description = "Library bindings for Netflix's VMAF"
-license = "MIT"
+license = "GPLv3"
 repository = "https://github.com/ThatNerdUKnow/libvmaf-sys"
 authors = ["Brandon Piña"]
 include = ["**/*.rs","Cargo.toml","Cargo.lock","vmaf/libvmaf","vmaf/model"]
