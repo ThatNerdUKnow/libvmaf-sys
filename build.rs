@@ -1,3 +1,5 @@
+
+
 use meson_next;
 use std::collections::HashMap;
 use std::env;
@@ -12,6 +14,7 @@ fn main() {
     let build_dir_str = build_dir.to_str().unwrap();
     let lib_dir_str = lib_dir.to_str().unwrap();
 
+    #[allow(unused_mut)]
     let mut meson_options = HashMap::<&str, &str>::new();
 
     #[cfg(feature = "avx512")]
