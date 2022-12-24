@@ -1,12 +1,12 @@
 [package]
 name = "libvmaf-sys"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2021"
 description = "Library bindings for Netflix's VMAF"
 license = "GPL-3.0-or-later"
 repository = "https://github.com/ThatNerdUKnow/libvmaf-sys"
 authors = ["Brandon Piña"]
-include = ["**/*.rs","Cargo.toml","Cargo.lock","vmaf/libvmaf","vmaf/model","vmaf/LICENSE"]
+include = ["**/*.rs","Cargo.toml","Cargo.lock","vmaf/libvmaf","vmaf/model","vmaf/LICENSE","*.ini"]
 readme = "readme.md"
 keywords = ["vmaf","video"]
 links = "vmaf"
@@ -16,8 +16,11 @@ links = "vmaf"
 [dependencies]
 
 [build-dependencies]
-meson-next = "1.1.3"
+meson-next = "1.2.1"
 bindgen = "0.63.0"
+
+[toolchain]
+channel = "stable-gnu"
 
 [features]
 float = []

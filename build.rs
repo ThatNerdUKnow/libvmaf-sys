@@ -1,13 +1,11 @@
-
-
 use meson_next;
+use meson_next::config::Config;
 use std::collections::HashMap;
 use std::env;
 use std::fs::canonicalize;
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 
 fn main() {
-    //env::set_var("RUST_BACKTRACE", "1");
     let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
     let lib_dir = build_dir.join("src");
 
@@ -23,7 +21,13 @@ fn main() {
     #[cfg(feature = "float")]
     meson_options.insert("enable_float", "True");
 
-    meson_next::build("vmaf/libvmaf", build_dir_str, Some(meson_options));
+    let native_file = canonicalize(Path::new("native-gcc-g++.ini")).unwrap();
+
+    let config: Config = Config::new()
+    .native_file(native_file)
+    .options(meson_options);
+
+    meson_next::build("vmaf/libvmaf", build_dir_str, config);
 
     println!("cargo:rustc-link-lib=static=vmaf");
     println!("cargo:rustc-link-search=native={lib_dir_str}");
