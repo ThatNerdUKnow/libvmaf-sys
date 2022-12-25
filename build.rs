@@ -3,7 +3,7 @@ use meson_next::config::Config;
 use std::collections::HashMap;
 use std::env;
 use std::fs::canonicalize;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 
 fn main() {
     let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
@@ -23,9 +23,13 @@ fn main() {
 
     let native_file = canonicalize(Path::new("native-gcc-g++.ini")).unwrap();
 
-    let config: Config = Config::new()
-    .native_file(native_file)
-    .options(meson_options);
+    #[allow(unused_mut)]
+    let mut config: Config = Config::new().options(meson_options);
+
+    #[cfg(target_os = "windows")]
+    let config = config.native_file(native_file);
+
+    println!("Build");
 
     meson_next::build("vmaf/libvmaf", build_dir_str, config);
 
@@ -35,9 +39,9 @@ fn main() {
 
     // Path to vendor header files
     let headers_dir = PathBuf::from("vmaf/libvmaf/include");
-    let headers_dir_canonical = canonicalize(headers_dir).unwrap();
-    let include_path = headers_dir_canonical.to_str().unwrap();
+    let include_path = headers_dir.to_str().unwrap();
 
+    println!("Bindgen");
     // Generate bindings to libvmaf using rust-bindgen
     let bindings = bindgen::Builder::default()
         .header("vmaf/libvmaf/include/libvmaf/libvmaf.h")
