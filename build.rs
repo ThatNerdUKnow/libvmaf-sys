@@ -2,8 +2,7 @@ use meson_next;
 use meson_next::config::Config;
 use std::collections::HashMap;
 use std::env;
-use std::fs::canonicalize;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 fn main() {
     let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
@@ -21,13 +20,13 @@ fn main() {
     #[cfg(feature = "float")]
     meson_options.insert("enable_float", "True");
 
-    let native_file = canonicalize(Path::new("native-gcc-g++.ini")).unwrap();
-
-    #[allow(unused_mut)]
-    let mut config: Config = Config::new().options(meson_options);
+    let config: Config = Config::new().options(meson_options);
 
     #[cfg(target_os = "windows")]
-    let config = config.native_file(native_file);
+    let config = {
+        let native_file = canonicalize(Path::new("native-gcc-g++.ini")).unwrap();
+        config.native_file(native_file);
+    };
 
     println!("Build");
 

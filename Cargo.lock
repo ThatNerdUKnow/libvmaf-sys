@@ -98,7 +98,7 @@ dependencies = [
 
 [[package]]
 name = "libvmaf-sys"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "bindgen",
  "meson-next",
@@ -121,9 +121,9 @@ checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
 
 [[package]]
 name = "meson-next"
-version = "1.2.1"
+version = "1.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cfaaf49434d73ac8e3dbf535919ff0489d14749040e4a43bd8660214c2142cbe"
+checksum = "40ac6863fae581981cf73dfed0db75d1cde064392ccfca7bd3aa82a4ba9ed2e0"
 
 [[package]]
 name = "minimal-lexical"
