@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Initalize submodules
+      run: git submodule init --recursive
     - name: Pull git submodules
       run: git submodule update --recursive
     - name: Build the Docker image
