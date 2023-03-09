@@ -33,8 +33,10 @@ fn main() {
 
     meson_next::build("vmaf/libvmaf", build_dir_str, config);
 
-    println!("cargo:rustc-link-lib=static=vmaf");
+    //println!("cargo:rustc-link-lib=static=vmaf");
     println!("cargo:rustc-link-search=native={lib_dir_str}");
+
+    println!("cargo:rustc-flags=-l static:+verbatim=libvmaf.a");
     println!("cargo:rustc-flags=-l dylib=stdc++");
 
     // Path to vendor header files
