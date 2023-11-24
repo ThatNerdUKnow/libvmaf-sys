@@ -16,7 +16,7 @@ links = "vmaf"
 [dependencies]
 
 [build-dependencies]
-meson-next = "1.2.2"
+meson-next = {version = "1.2.2", optional = true}
 bindgen = "0.69.1"
 pkg-config = "0.3.27"
 
@@ -27,5 +27,5 @@ channel = "stable-gnu"
 #default = ["build"]
 float = ["build"]
 avx512 = ["build"]
-build = []
+build = ["dep:meson-next"]
 

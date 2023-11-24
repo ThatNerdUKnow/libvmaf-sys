@@ -33,7 +33,7 @@ fn main() {
 /// Set linker flags for required libraries
 fn link_lib() {
     println!("cargo:rustc-link-lib=dylib=vmaf");
-    println!("cargo:rustc-flags=-l dylib=stdc++");
+    println!("cargo:rustc-link-lib=dylib=stdc++");
 }
 
 #[cfg(feature = "build")]
