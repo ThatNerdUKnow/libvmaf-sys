@@ -1,4 +1,4 @@
-use bindgen::CargoCallbacks;
+use bindgen::{Builder, CargoCallbacks};
 use meson_next;
 use meson_next::config::Config;
 use std::collections::HashMap;
@@ -7,17 +7,11 @@ use std::fs::canonicalize;
 use std::path::{Path, PathBuf};
 
 fn main() {
-    #[cfg(feature = "build")]
-    let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
 
     #[cfg(feature = "build")]
-    build_lib(build_dir);
+    build_lib();
 
     link_lib();
-
-    // Path to vendor header files
-    #[cfg(feature = "build")]
-    let include_path = PathBuf::from("vmaf/libvmaf/include").to_str().unwrap();
 
     println!("Bindgen");
     // Generate bindings to libvmaf using rust-bindgen
@@ -25,28 +19,12 @@ fn main() {
         .default_enum_style(bindgen::EnumVariation::Rust {
             non_exhaustive: false,
         })
+        .allowlist_item("[Vv]maf\\w*")
         .parse_callbacks(Box::new(CargoCallbacks::new()));
 
-    #[cfg(feature = "build")]
-    let builder = builder
-        .clang_arg(format!("-I{include_path}"))
-        .header("vmaf/libvmaf/include/libvmaf/libvmaf.h");
+    let builder = gen_bindings(builder);
 
-    let lib = pkg_config::Config::new().probe("libvmaf").unwrap();
-
-    let include = lib
-        .include_paths
-        .iter()
-        .map(|i| format!("-I{}", i.to_string_lossy()));
-
-    let builder = builder.clang_args(include);
-
-    let builder = builder.header("wrapper.h");
-
-    let bindings = builder
-        .allowlist_item("[Vv]maf\\w*")
-        .generate()
-        .expect("Unable to generate bindings");
+    let bindings = builder.generate().expect("Unable to generate bindings");
 
     // Write bindings to build directory
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
@@ -56,13 +34,15 @@ fn main() {
 }
 
 /// Set linker flags for required libraries
-fn link_lib(){
+fn link_lib() {
     println!("cargo:rustc-link-lib=dylib=vmaf");
     println!("cargo:rustc-flags=-l dylib=stdc++");
 }
 
 #[cfg(feature = "build")]
-fn build_lib(build_dir: PathBuf) {
+fn build_lib() {
+    
+    let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
     let lib_dir = build_dir.join("src");
     let build_dir_str = build_dir.to_str().unwrap();
     let lib_dir_str = lib_dir.to_str().unwrap();
@@ -83,4 +63,32 @@ fn build_lib(build_dir: PathBuf) {
 
     meson_next::build("vmaf/libvmaf", build_dir_str, config);
     println!("cargo:rustc-link-search=native={lib_dir_str}");
+}
+
+#[cfg(feature = "build")]
+fn gen_bindings(builder: Builder) -> Builder {
+    // Path to vendor header files
+    let include_path = PathBuf::from("vmaf/libvmaf/include");
+    let include_str = include_path.to_str().expect("Could not format vmaf include directory string");
+
+    builder
+        .clang_arg(format!("-I{include_str}"))
+        .header("vmaf/libvmaf/include/libvmaf/libvmaf.h")
+}
+
+#[cfg(not(feature = "build"))]
+fn gen_bindings(builder: Builder) -> Builder {
+    println!("cargo:rerun-if-changed=wrapper.h");
+    let lib = pkg_config::Config::new()
+        .probe("libvmaf")
+        .expect("pkg-config can't find library libvmaf");
+
+    let include = lib
+        .include_paths
+        .iter()
+        .map(|i| format!("-I{}", i.to_string_lossy()));
+
+    let builder = builder.clang_args(include).header("wrapper.h");
+
+    builder
 }
