@@ -23,13 +23,15 @@ fn main() {
 
     let config: Config = Config::new().options(meson_options);
 
+    /* 
     #[cfg(target_os = "windows")]
     let config = {
         let native_file = canonicalize(Path::new("native-gcc-g++.ini")).unwrap();
         config.native_file(native_file)
-    };
+    };*/
 
     println!("Build");
+    println!("Directory: {build_dir_str}");
 
     meson_next::build("vmaf/libvmaf", build_dir_str, config);
 
