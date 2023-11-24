@@ -10,17 +10,10 @@ fn main() {
     #[cfg(feature = "build")]
     let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
 
-    /*
-    #[cfg(target_os = "windows")]
-    let config = {
-        let native_file = canonicalize(Path::new("native-gcc-g++.ini")).unwrap();
-        config.native_file(native_file)
-    };*/
-
     #[cfg(feature = "build")]
     build_lib(build_dir);
 
-    println!("cargo:rustc-link-lib=static=vmaf");
+    link_lib();
 
     // Path to vendor header files
     #[cfg(feature = "build")]
@@ -62,6 +55,12 @@ fn main() {
         .expect("Couldn't write bindings!");
 }
 
+/// Set linker flags for required libraries
+fn link_lib(){
+    println!("cargo:rustc-link-lib=dylib=vmaf");
+    println!("cargo:rustc-flags=-l dylib=stdc++");
+}
+
 #[cfg(feature = "build")]
 fn build_lib(build_dir: PathBuf) {
     let lib_dir = build_dir.join("src");
@@ -83,6 +82,5 @@ fn build_lib(build_dir: PathBuf) {
     println!("Directory: {build_dir_str}");
 
     meson_next::build("vmaf/libvmaf", build_dir_str, config);
-    println!("cargo:rustc-flags=-l dylib=stdc++");
     println!("cargo:rustc-link-search=native={lib_dir_str}");
 }
