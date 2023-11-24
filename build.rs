@@ -42,21 +42,23 @@ fn build_lib() {
     use std::{collections::HashMap, process::Command};
 
     // Pull vmaf git submodule
-    let _git_submodule_update = Command::new("git").args(["submodule", "update", "--recursive","--init"]).status().expect("Could not update vmaf git submodule");
+    let _git_submodule_update = Command::new("git")
+    .args(["submodule", "update", "--recursive","--init"])
+    .status()
+    .expect("Could not update vmaf git submodule");
 
     let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
     let lib_dir = build_dir.join("src");
     let build_dir_str = build_dir.to_str().unwrap();
     let lib_dir_str = lib_dir.to_str().unwrap();
 
-    #[allow(unused_mut)]
-    let mut meson_options = HashMap::<&str, &str>::new();
+    let meson_options = HashMap::<&str, &str>::new();
 
     #[cfg(feature = "avx512")]
-    meson_options.insert("enable_avx512", "True");
+    let meson_options = meson_options.insert("enable_avx512", "True");
 
     #[cfg(feature = "float")]
-    meson_options.insert("enable_float", "True");
+    let meson_options = meson_options.insert("enable_float", "True");
 
     let config: Config = Config::new().options(meson_options);
 
