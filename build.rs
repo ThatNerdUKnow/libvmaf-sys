@@ -1,13 +1,10 @@
 use bindgen::{Builder, CargoCallbacks};
-use meson_next;
-use meson_next::config::Config;
-use std::collections::HashMap;
+
 use std::env;
-use std::fs::canonicalize;
-use std::path::{Path, PathBuf};
+
+use std::path::PathBuf;
 
 fn main() {
-
     #[cfg(feature = "build")]
     build_lib();
 
@@ -41,7 +38,8 @@ fn link_lib() {
 
 #[cfg(feature = "build")]
 fn build_lib() {
-    
+    use std::collections::HashMap;
+    use meson_next::config::Config;
     let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
     let lib_dir = build_dir.join("src");
     let build_dir_str = build_dir.to_str().unwrap();
@@ -69,7 +67,9 @@ fn build_lib() {
 fn gen_bindings(builder: Builder) -> Builder {
     // Path to vendor header files
     let include_path = PathBuf::from("vmaf/libvmaf/include");
-    let include_str = include_path.to_str().expect("Could not format vmaf include directory string");
+    let include_str = include_path
+        .to_str()
+        .expect("Could not format vmaf include directory string");
 
     builder
         .clang_arg(format!("-I{include_str}"))
@@ -88,7 +88,5 @@ fn gen_bindings(builder: Builder) -> Builder {
         .iter()
         .map(|i| format!("-I{}", i.to_string_lossy()));
 
-    let builder = builder.clang_args(include).header("wrapper.h");
-
-    builder
+    builder.clang_args(include).header("wrapper.h")
 }
