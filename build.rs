@@ -42,7 +42,7 @@ fn build_lib() {
     use std::{collections::HashMap, process::Command};
 
     // Pull vmaf git submodule
-    Command::new("git").args(["submodule", "update", "--recursive"]).status().expect("Could not update vmaf git submodule");
+    let _git_submodule_update = Command::new("git").args(["submodule", "update", "--recursive","--init"]).status().expect("Could not update vmaf git submodule");
 
     let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
     let lib_dir = build_dir.join("src");
