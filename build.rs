@@ -38,8 +38,12 @@ fn link_lib() {
 
 #[cfg(feature = "build")]
 fn build_lib() {
-    use std::collections::HashMap;
     use meson_next::config::Config;
+    use std::{collections::HashMap, process::Command};
+
+    // Pull vmaf git submodule
+    Command::new("git").args(["submodule", "update", "--recursive"]).status().expect("Could not update vmaf git submodule");
+
     let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
     let lib_dir = build_dir.join("src");
     let build_dir_str = build_dir.to_str().unwrap();
