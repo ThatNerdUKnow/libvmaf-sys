@@ -35,7 +35,14 @@ fn main() {
 
 /// Set linker flags for required libraries
 fn link_lib() {
-    println!("cargo:rustc-link-lib=dylib=vmaf");
+    #[cfg(feature="static")]
+    let vmaf_link_style = "static";
+    #[cfg(not(feature="static"))]
+    let vmaf_link_style = "dylib";
+
+    println!("cargo:rustc-link-lib={vmaf_link_style}=vmaf");
+    
+    // c++ standard library can only be linked to dynamically
     println!("cargo:rustc-link-lib=dylib=stdc++");
 }
 

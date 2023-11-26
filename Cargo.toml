@@ -1,6 +1,6 @@
 [package]
 name = "libvmaf-sys"
-version = "0.4.1"
+version = "0.4.2"
 edition = "2021"
 description = "Library bindings for Netflix's VMAF"
 license = "GPL-3.0-or-later"
@@ -25,6 +25,7 @@ channel = "stable-gnu"
 
 [features]
 default = ["build"]
+static = []
 float = ["build"]
 avx512 = ["build"]
 build = ["dep:meson-next"]
