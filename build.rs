@@ -59,8 +59,7 @@ fn build_lib() {
     // Pull vmaf git submodule
     let _git_submodule_update = Command::new("git")
         .args(["submodule", "update", "--recursive", "--init"])
-        .status()
-        .expect("Could not update vmaf git submodule");
+        .status();
 
     let build_dir = PathBuf::from(env::var("OUT_DIR").unwrap()).join("build");
     let lib_dir = build_dir.join("src");
